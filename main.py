@@ -57,32 +57,18 @@ class GridObstacle():
         def placeObstacle(obstacles, x, y):
                 for obstacle in obstacles:
                         if x == obstacle.x:
-                                # if above : y+1
-                                # if below : y-1
                                 if y + 1 == obstacle.y or y - 1 == obstacle.y:
                                         return False
                                 else:
                                         continue
 
                         if y == obstacle.y:
-                                # if left : x-1
-                                # if right : x+1
                                 if x - 1 == obstacle.x or x + 1 == obstacle.x:
                                         return False
                                 else:
                                         continue
 
-                        if x + 1 == obstacle.x:
-                                # if topleft : x+1, y-1
-                                # if topright : x+1, y+1
-                                if y - 1 == obstacle.y or y + 1 == obstacle.y:
-                                        return False
-                                else:
-                                        continue
-
-                        if x - 1 == obstacle.x:
-                                # if botleft : x-1, y-1
-                                # if botright : x-1, y+1
+                        if x + 1 == obstacle.x or x - 1 == obstacle.x:
                                 if y - 1 == obstacle.y or y + 1 == obstacle.y:
                                         return False
                                 else:
