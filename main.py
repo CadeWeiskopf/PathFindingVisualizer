@@ -74,11 +74,11 @@ class AStar():
                                         else:
                                                 continue
 
-                                if current.y - 1 == space.y or current.y + 1 == space.y:
-                                        if current.x + 1 == space.x or current.x - 1 == space.x:
-                                                neighbors.append(space)
-                                        else:
-                                                continue
+                                #if current.y - 1 == space.y or current.y + 1 == space.y:
+                                #        if current.x + 1 == space.x or current.x - 1 == space.x:
+                                #                neighbors.append(space)
+                                #        else:
+                                #                continue
 
                         tentativeHScores = {}
                         tentativeFScores = {}
