@@ -1,5 +1,7 @@
 # PathFindingVisualizer
 
+* Black = open node
+* Gray = obstacle
 * White = visited node
 * Red = optimal path
 
