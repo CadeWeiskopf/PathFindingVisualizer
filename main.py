@@ -1,3 +1,4 @@
+from ast import AST
 from colorsys import hls_to_rgb
 import kivy
 from kivy.app import App
@@ -9,18 +10,46 @@ from kivy.uix.label import Label
 import random
 
 
-class Grid():
+class AStar():
+        @staticmethod
+        def makeStep():
+                print('do makeStep')
+
+        @staticmethod
+        def solveMaze(maze):
+                step = maze.openSpaces[0].button
+                step.background_color = (255, 0, 0, 255)
+                for space in maze.openSpaces:
+                        AStar.makeStep()
+
+
+class Maze():
         obstacles = []
         openSpaces = []
+        path = []
+        destination = (-1, -1)
 
         def __init__(self, rows, cols):
                 self.rows = rows
                 self.cols = cols
-        
+
+        def setDestination(self, x, y):
+                self.destination = (x, y)
+                for space in self.openSpaces:
+                        if space.x == x and space.y == y:
+                                space.button.background_color = (0, 255, 0, 255)
+                                print('destination')
+
+
+class GridSpace():
+        def __init__(self, button, x, y):
+                self.button = button
+                self.x = x
+                self.y = y
 
 class GridObstacle():
-        def __init__(self, btn, x, y):
-                self.btn = btn
+        def __init__(self, button, x, y):
+                self.button = button
                 self.x = x
                 self.y = y
         
@@ -63,40 +92,49 @@ class GridObstacle():
 
 
 class MyGrid(GridLayout):
-    def __init__(self, **kwargs):
-        super(MyGrid, self).__init__(**kwargs)
-        grid = Grid(20, 20)
-        self.rows = grid.rows
-        self.cols = grid.cols
-        print(str(grid.rows) + ' ' + str(grid.cols))
-        i = grid.rows
-        while i > 0:
-                j = grid.cols
-                while j > 0:
-                        if (i == grid.rows and j == grid.cols) == False and (i == 1 and j == 1) == False and GridObstacle.placeObstacle(grid.obstacles, j, i) == True:
-                                # create obstacle
-                                button = Button(text=' ')
-                                self.add_widget(button)
-                                obstacle = GridObstacle(button, j, i)
-                                grid.obstacles.append(obstacle)
-                        else:
-                                # create empty space
-                                button = Button(text=' ', background_color=(0,0,0,255))
-                                self.add_widget(button)
-                                grid.openSpaces.append((j, i))
-                        j -= 1
-                i -= 1
 
-        for ob in grid.obstacles:
-                print(str(ob))
+        def __init__(self, **kwargs):
+                super(MyGrid, self).__init__(**kwargs)
+                maze = Maze(20, 20)
+                self.rows = maze.rows
+                self.cols = maze.cols
+                print(str(maze.rows) + ' ' + str(maze.cols))
+                i = maze.rows
+                while i > 0:
+                        j = maze.cols
+                        while j > 0:
+                                if (i == maze.rows and j == maze.cols) == False and (i == 1 and j == 1) == False and GridObstacle.placeObstacle(maze.obstacles, j, i) == True:
+                                        # create obstacle
+                                        button = Button(text=' ')
+                                        self.add_widget(button)
+                                        obstacle = GridObstacle(button, j, i)
+                                        maze.obstacles.append(obstacle)
+                                else:
+                                        # create empty space
+                                        button = Button(text=' ', background_color=(0,0,0,255))
+                                        self.add_widget(button)
+                                        space = GridSpace(button, j, i)
+                                        maze.openSpaces.append(space)
+                                j -= 1
+                        i -= 1
 
-        for os in grid.openSpaces:
-                print(str(os))
+                maze.setDestination(1, 1)
+                for ob in maze.obstacles:
+                        print(str(ob))
+
+                for os in maze.openSpaces:
+                        print(str(os))
+                
+                AStar.solveMaze(maze)
+
+
+
+        
 
 class MyApp(App):
-    def build(self):
-        return MyGrid()
+        def build(self):
+                return MyGrid()
 
 if __name__ == '__main__':
-    myApp = MyApp()
-    myApp.run()
+        myApp = MyApp()
+        myApp.run()
